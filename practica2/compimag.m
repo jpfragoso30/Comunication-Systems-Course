@@ -27,7 +27,7 @@ function [compressedImage] = compimag(nomarch, tipo, umbral)
 
     subplot(1, 4, 2)
     histogram(originalProbabilities) % 3) display original entropy on screen
-    title(strcat(compimagName, ' - Entropy'))
+    title(strcat(compimagName, ' - Probabilities'))
 
     processedMatrix = getCoefficientMatrix(originalMatrix, umbral); % 4) divide image into 8x8 blocks, 
     %5) apply DCT to blocks, 6) filtering higher than threshold
@@ -36,7 +36,7 @@ function [compressedImage] = compimag(nomarch, tipo, umbral)
 
     subplot(1, 4, 3)
     histogram(processedProbabilities) % 7) display processed entropy on screen
-    title(strcat(compimagName, ' - Entropy (Processed)'))
+    title(strcat(compimagName, ' - Probabilities (Processed)'))
     
     recoveredMatrix = recoverImage(processedMatrix); % 8) apply IDCT to blocks
 
@@ -46,6 +46,7 @@ function [compressedImage] = compimag(nomarch, tipo, umbral)
 
     [ECM, errorPercentage, compressPercentage] = compareImages(originalMatrix, processedMatrix, recoveredMatrix); % 10) , 11) get ECM, error(%) and compression (%)
 
+    fprintf('[%s] | Original Entropy: %s, Processed Entropy: %s\n', compimagName, num2str(originalEntropy), num2str(processedEntropy));
     fprintf('[%s] | ECM: %s, Error Percentage: %s, Compress Percentage: %s\n', compimagName, strcat(num2str(ECM), ' %'), strcat(num2str(errorPercentage), ' %'), strcat(num2str(compressPercentage), ' %'));
 
     compressedImage = recoveredMatrix;
